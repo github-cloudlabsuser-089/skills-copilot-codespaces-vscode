@@ -1,0 +1,29 @@
+# Create a GitHub action to email a report from a file at 6 a.m. daily.
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+name: Email report at 6 a.m. daily
+on:
+  schedule:
+    - cron: '0 6 * * *'
+jobs:
+  send_report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Send report
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MY_USERNAME }}
+          password: ${{ secrets.MY_PASSWORD }}
+          subject: 'Report'
+          body: 'See the attached report.'
+          from: ${{ secrets.MY_USERNAME }}
+          to: ${{ secrets.MY_USERNAME }}
+          attachments: 'report.txt'
+```
+
+## License
+
+[MIT](LICENSE)
